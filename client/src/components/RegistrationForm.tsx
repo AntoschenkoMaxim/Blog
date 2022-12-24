@@ -25,11 +25,10 @@ const RegistrationForm: FC = () => {
 	const { store } = useContext(Context)
 
 	//user information
-	const [email, setEmail] = useState<string>('')
-	const [password, setPassword] = useState<string>('')
-	const [firstName, setFirstName] = useState<string>('')
-	const [lastName, setLastName] = useState<string>('')
-	const [location, setLocation] = useState<string>('')
+	const [user, setUser] = useState<IRegistrationForm>(
+		{ email: '', password: '', firstName: '', lastName: '', location: '' }, //image
+	)
+
 	const [image, setImage] = useState<File | null>(null)
 	console.log(image)
 
@@ -65,8 +64,8 @@ const RegistrationForm: FC = () => {
 					? <>
 						<TextInput
 							icon={<IconAt size={16} />}
-							value={email}
-							onChange={e => setEmail(e.target.value)}
+									value={user.email}
+									onChange={(e) => setUser({ ...user, email: e.target.value })}
 							label='Email'
 							placeholder='test@gmail.com'
 							required
@@ -74,8 +73,8 @@ const RegistrationForm: FC = () => {
 						/>
 						<PasswordInput
 							icon={<IconLock size={16} />}
-							value={password}
-							onChange={e => setPassword(e.target.value)}
+												value={user.password}
+												onChange={(e) => setUser({ ...user, password: e.target.value })}
 							label='Password'
 							placeholder='Your password'
 							required
@@ -112,8 +111,8 @@ const RegistrationForm: FC = () => {
 							: <>
 								<TextInput
 									icon={<IconPencil size={16} />}
-									value={firstName}
-									onChange={e => setFirstName(e.target.value)}
+									value={user.firstName}
+									onChange={(e) => setUser({ ...user, firstName: e.target.value })}
 									label='Name'
 									placeholder='Alexander'
 									required
@@ -121,8 +120,8 @@ const RegistrationForm: FC = () => {
 								/>
 								<TextInput
 									icon={<IconPencil size={16} />}
-									value={lastName}
-									onChange={e => setLastName(e.target.value)}
+									value={user.lastName}
+									onChange={(e) => setUser({ ...user, lastName: e.target.value })}
 									label='Last name'
 									placeholder='Dmitriev'
 									required
@@ -130,8 +129,8 @@ const RegistrationForm: FC = () => {
 								/>
 								<TextInput
 									icon={<IconMap2 size={16} />}
-									value={location}
-									onChange={e => setLocation(e.target.value)}
+									value={user.location}
+									onChange={(e) => setUser({ ...user, location: e.target.value })}
 									label='Location'
 									placeholder='Minsk'
 									required
@@ -152,7 +151,7 @@ const RegistrationForm: FC = () => {
 					</Col>
 					<Col span={12} md={7}>
 						{active === 3
-							?
+									<Button fullWidth disabled={!isValid} onClick={() => store.registration(user)}>
 							<Button
 								fullWidth
 								mt='xl'
