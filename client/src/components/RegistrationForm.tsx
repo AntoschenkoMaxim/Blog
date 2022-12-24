@@ -3,10 +3,10 @@ import { Context } from '../index'
 import { observer } from 'mobx-react-lite';
 import {
 	TextInput,
-	PasswordInput,
+import { requirementsData, validationData } from '../constants'
 	Checkbox,
 	Anchor,
-	Paper,
+import { useForm } from 'react-hook-form'
 	Title,
 	Text,
 	Container,
@@ -38,6 +38,25 @@ const RegistrationForm: FC = () => {
 	const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
 	return (
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors, isValid },
+	} = useForm<IRegistrationForm>({
+		mode: 'onBlur',
+		defaultValues: {
+			email: '',
+			password: '',
+			firstName: '',
+			lastName: '',
+			location: '',
+		},
+	})
+
+	const onSubmit = (
+		register,
+	const {
 		<Container size={420} my={40}>
 			<Title
 				align="center"
@@ -62,7 +81,18 @@ const RegistrationForm: FC = () => {
 
 				{active === 1
 					? <>
-						<TextInput
+								<TextInput
+									{...register('email', {
+										required: {
+											value: validationData.email.required,
+											message: validationData.email.requiredErrorMessage,
+										},
+										pattern: {
+											value: validationData.email.regex,
+											message: validationData.email.regexErrorMessage,
+										},
+									})}
+									error={errors?.email?.message}
 							icon={<IconAt size={16} />}
 									value={user.email}
 									onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -71,7 +101,18 @@ const RegistrationForm: FC = () => {
 							required
 							mt={5}
 						/>
-						<PasswordInput
+											<PasswordInput
+												{...register('password', {
+													required: {
+														value: validationData.password.required,
+														message: validationData.password.requiredErrorMessage,
+													},
+													pattern: {
+														value: validationData.password.regex,
+														message: validationData.password.regexErrorMessage,
+													},
+												})}
+												error={errors?.password?.message}
 							icon={<IconLock size={16} />}
 												value={user.password}
 												onChange={(e) => setUser({ ...user, password: e.target.value })}
@@ -100,16 +141,41 @@ const RegistrationForm: FC = () => {
 						</>
 						: active === 3
 							? <>
-								<Text
-									color='dimmed'
-									mt={5}
-									align='center'
-								>
-									Successfully registration. Let's go...
-								</Text>
+								{isValid ? (
+									<Alert
+										icon={<IconCheck size={20} />}
+										title='Successfully registration!'
+										mt='lg'
+										color='teal'
+									>
+										Successfully registration! Lorem Ipsum is simply dummy text of the printing and
+										typesetting industry.
+									</Alert>
+								) : (
+									<Alert
+										icon={<IconX size={20} />}
+										title='Unsuccessfully registration!'
+										mt='lg'
+										color='red'
+										Unsuccessfully registration! Lorem Ipsum is simply dummy text of the printing
+										and typesetting industry.
+									</Alert>
+								)}
 							</>
 							: <>
 								<TextInput
+								<TextInput
+									{...register('firstName', {
+										required: {
+											value: validationData.firstName.required,
+											message: validationData.firstName.requiredErrorMessage,
+										},
+										pattern: {
+											value: validationData.firstName.regex,
+											message: validationData.firstName.regexErrorMessage,
+										},
+									})}
+									error={errors?.firstName?.message}
 									icon={<IconPencil size={16} />}
 									value={user.firstName}
 									onChange={(e) => setUser({ ...user, firstName: e.target.value })}
@@ -119,6 +185,13 @@ const RegistrationForm: FC = () => {
 									mt={5}
 								/>
 								<TextInput
+									{...register('lastName', {
+										required: {
+											value: validationData.lastName.required,
+											message: validationData.lastName.requiredErrorMessage,
+										},
+									})}
+									error={errors?.lastName?.message}
 									icon={<IconPencil size={16} />}
 									value={user.lastName}
 									onChange={(e) => setUser({ ...user, lastName: e.target.value })}
@@ -128,6 +201,13 @@ const RegistrationForm: FC = () => {
 									mt={5}
 								/>
 								<TextInput
+									{...register('location', {
+										required: {
+											value: validationData.location.required,
+											message: validationData.location.requiredErrorMessage,
+										},
+									})}
+									error={errors?.location?.message}
 									icon={<IconMap2 size={16} />}
 									value={user.location}
 									onChange={(e) => setUser({ ...user, location: e.target.value })}
@@ -163,7 +243,7 @@ const RegistrationForm: FC = () => {
 								Let's go!
 							</Button>
 							:
-							<Button
+									<Button fullWidth disabled={!isValid} onClick={() => nextStep()}>
 								fullWidth
 								mt='xl'
 								onClick={() => nextStep()}
