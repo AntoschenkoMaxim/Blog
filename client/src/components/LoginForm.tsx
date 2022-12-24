@@ -14,7 +14,8 @@ import {
 	Button,
 } from '@mantine/core';
 
-const LoginForm: FC = () => {
+import { useForm } from 'react-hook-form'
+import { validationData } from '../constants'
 
 	const { store } = useContext(Context)
 
@@ -22,6 +23,19 @@ const LoginForm: FC = () => {
     email: '',
     password: '',
   })
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<ILoginForm>({
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
 	return (
 		<Container size={420} my={40}>
 			<Title
@@ -37,18 +51,35 @@ const LoginForm: FC = () => {
 			</Text>
 			<Paper withBorder shadow='md' radius='md' p={30} mt={30}>
 				<TextInput
-					value={email}
-					onChange={e => setEmail(e.target.value)}
-					label='Email'
+          {...register('email', {
+            required: {
+              value: validationData.email.required,
+              message: validationData.email.requiredErrorMessage,
+            },
+            pattern: {
+              value: validationData.email.regex,
+              message: validationData.email.regexErrorMessage,
+            },
+          })}
+          error={errors?.email?.message}
           value={user.email}
           onChange={(e) => setUser({ ...user, email: e.target.value })}
+          label='Email'
 					placeholder='test@gmail.com'
 					required
 				/>
 				<PasswordInput
-					value={password}
-					onChange={e => setPassword(e.target.value)}
-					label='Password'
+          {...register('password', {
+            required: {
+              value: validationData.password.required,
+              message: validationData.password.requiredErrorMessage,
+            },
+            pattern: {
+              value: validationData.password.regex,
+              message: validationData.password.regexErrorMessage,
+            },
+          })}
+          error={errors?.password?.message}
           value={user.password}
           onChange={(e) => setUser({ ...user, password: e.target.value })}
 					placeholder='Your password'
