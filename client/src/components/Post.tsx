@@ -47,6 +47,7 @@ export function Post({
 
 	const date = moment(createdAt).fromNow()
 
+  const { store } = useContext(Context)
 	return (
 		<Card withBorder p='lg' radius='md' className={classes.card}>
 			<Card.Section mb='sm'>
@@ -86,6 +87,9 @@ export function Post({
 						<ActionIcon>
 							<IconBookmark size={18} stroke={1.5} />
 						</ActionIcon>
+            <ActionIcon onClick={() => store.deletePostByID(id)}>
+              <IconTrash size={18} stroke={1.5} />
+            </ActionIcon>
 					</Group>
 				</Group>
 			</Card.Section>

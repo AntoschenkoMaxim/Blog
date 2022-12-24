@@ -88,8 +88,13 @@ export default class Store {
 			const response = await PostService.createPost(title, description, location)
 			console.log(response)
 			this.setPost(response.data.post) //set post
-		} catch (error) {
-			console.log(error)
-		}
-	}
+  async deletePostByID(id: string) {
+    try {
+      // const response = await PostService.deletePostByID(_id)
+      // console.log(response)
+      this.posts = this.posts.filter((item) => item.id !== id)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 }
