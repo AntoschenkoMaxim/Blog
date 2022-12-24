@@ -9,7 +9,7 @@ class PostController {
 			if (!errors.isEmpty()) {
 				return ApiError.BadRequestError('Validation error', errors.array())
 			}
-			const { title, description, location } = req.body
+			const { title, description, location } = req.body.postData
 
 			const postData = await postService.createPost(title, description, location) //comments, createdBy, image, date
 			return res.json(postData)
