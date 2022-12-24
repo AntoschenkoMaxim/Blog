@@ -1,26 +1,29 @@
-import './App.css';
+import './App.css'
 import { FC, useEffect, useContext, useState } from 'react'
-import RegistrationForm from './components/RegistrationForm';
-import { Context } from '.';
-import { observer } from 'mobx-react-lite';
-import { IUser } from './models/IUser';
-import UserService from './services/UserService';
+import RegistrationForm from './components/RegistrationForm'
+import { Context } from '.'
+import { observer } from 'mobx-react-lite'
+import { IUser } from './models/IUser'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import { LoginForm, Profile, Layout, Posts, Faq } from './components';
+import { LoginForm, Profile, Layout, Posts, Faq } from './components'
+import { Loader } from '@mantine/core'
 
 const App: FC = () => {
-
   const { store } = useContext(Context)
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      store.checkAuth()
+    }
+  }, [])
+
   if (store.isLoading) {
-    return <div>Loading...</div>
+    return <Loader size='xl' />
   }
 
   if (!store.isAuth) {
-    return (
-      <RegistrationForm />
-    )
+    return <RegistrationForm />
   }
 
   return (
@@ -43,4 +46,3 @@ const App: FC = () => {
 }
 
 export default observer(App)
-

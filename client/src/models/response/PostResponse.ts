@@ -1,5 +1,5 @@
-import { IPost } from '../IPost';
+import { IPost } from '../IPost'
 
 export interface PostResponse {
-	post: IPost
+  post: IPost
 }

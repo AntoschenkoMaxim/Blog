@@ -6,5 +6,16 @@ import Posts from './Posts'
 import RegistrationForm from './RegistrationForm'
 import CreatePost from './CreatePost'
 import Post from './Post'
+import PasswordRequirement from './PasswordRequirement'
 
-export { Post, Faq, Layout, LoginForm, Profile, Posts, RegistrationForm, CreatePost }
+export {
+  Post,
+  Faq,
+  Layout,
+  LoginForm,
+  Profile,
+  Posts,
+  RegistrationForm,
+  CreatePost,
+  PasswordRequirement,
+}
