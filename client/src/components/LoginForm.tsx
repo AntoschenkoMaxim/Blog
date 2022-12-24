@@ -16,10 +16,12 @@ import {
 
 const LoginForm: FC = () => {
 
-	const [email, setEmail] = useState<string>('')
-	const [password, setPassword] = useState<string>('')
 	const { store } = useContext(Context)
 
+  const [user, setUser] = useState<ILoginForm>({
+    email: '',
+    password: '',
+  })
 	return (
 		<Container size={420} my={40}>
 			<Title
@@ -38,6 +40,8 @@ const LoginForm: FC = () => {
 					value={email}
 					onChange={e => setEmail(e.target.value)}
 					label='Email'
+          value={user.email}
+          onChange={(e) => setUser({ ...user, email: e.target.value })}
 					placeholder='test@gmail.com'
 					required
 				/>
@@ -45,6 +49,8 @@ const LoginForm: FC = () => {
 					value={password}
 					onChange={e => setPassword(e.target.value)}
 					label='Password'
+          value={user.password}
+          onChange={(e) => setUser({ ...user, password: e.target.value })}
 					placeholder='Your password'
 					required
 					mt='md'
@@ -52,7 +58,7 @@ const LoginForm: FC = () => {
 				<Group position='apart' mt='lg'>
 					<Checkbox label='Remember me?' sx={{ lineHeight: 1 }} />
 				</Group>
-				<Button fullWidth mt='xl' onClick={() => store.login(email, password)}>Login</Button>
+        <Button fullWidth mt='xl' disabled={!isValid} onClick={() => store.login(user)}>
 			</Paper>
 		</Container >
 	)
